@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#2a5a8a"/>
+  <g fill="#ffffff" font-family="monospace" text-anchor="middle">
+    <text x="256" y="210" font-size="110" font-weight="700">GED</text>
+    <text x="256" y="320" font-size="70" font-weight="400">to</text>
+    <text x="256" y="430" font-size="110" font-weight="700">WIKI</text>
+  </g>
+</svg>

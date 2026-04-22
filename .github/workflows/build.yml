@@ -1,4 +1,4 @@
-name: Lint gedcom2wiki
+name: Build gedcom2wiki
 
 on:
   push:
@@ -8,22 +8,46 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: Perl Syntax Check
+  test:
+    name: Smoke-test converter
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check Perl syntax
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Syntax-check JavaScript
+        run: node --check gedcom2wiki.js
+
+      - name: Run converter against sample.ged
         run: |
-          echo "Checking Perl files..."
-          errors=0
-          for f in $(find . -name "*.pl" -o -name "*.pm" -o -name "*.cgi" | head -50); do
-            echo "  Checking: $f"
-            perl -c "$f" 2>&1 || errors=$((errors + 1))
-          done
-          if [ $errors -gt 0 ]; then
-            echo "::warning::$errors file(s) had syntax issues"
-          else
-            echo "All Perl files passed syntax check!"
-          fi
+          node -e "
+          const fs = require('fs');
+          const gedcom2wiki = require('./gedcom2wiki.js');
+          const text = fs.readFileSync('sample.ged', 'utf8');
+          const res = gedcom2wiki(text);
+          if (!res.output.includes('{{familytree/start}}')) throw new Error('missing start template');
+          if (!res.output.includes('{{familytree/end}}'))   throw new Error('missing end template');
+          if (res.individualCount !== 8) throw new Error('expected 8 individuals, got ' + res.individualCount);
+          if (res.familyCount     !== 2) throw new Error('expected 2 families, got ' + res.familyCount);
+          console.log('OK:', res.individualCount, 'individuals in', res.familyCount, 'families');
+          "
+
+  build-releases:
+    name: Build all platform distributions
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: ./build-releases.sh
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gedcom2wiki-releases
+          path: releases/gedcom2wiki-*
