@@ -85,12 +85,12 @@ jobs:
 
           | Platform | Archive | Launcher |
           |----------|---------|----------|
-          | Web      | \`gedcom2wiki-web-${VERSION}.zip\`       | open \`index.html\`                |
-          | Windows  | \`gedcom2wiki-windows-${VERSION}.zip\`   | \`launch.bat\`                     |
-          | macOS    | \`gedcom2wiki-macos-${VERSION}.zip\`     | \`launch.command\`                 |
-          | Linux    | \`gedcom2wiki-linux-${VERSION}.tar.gz\`  | \`launch.sh\` + \`.desktop\` file  |
-          | Android  | \`gedcom2wiki-android-${VERSION}.zip\`   | PWA (Add to Home Screen)           |
-          | iOS      | \`gedcom2wiki-ios-${VERSION}.zip\`       | PWA (Add to Home Screen)           |
+          | Web      | \`gedcom2wiki-web-v${VERSION}.zip\`       | open \`index.html\`                |
+          | Windows  | \`gedcom2wiki-windows-v${VERSION}.zip\`   | \`launch.bat\`                     |
+          | macOS    | \`gedcom2wiki-macos-v${VERSION}.zip\`     | \`launch.command\`                 |
+          | Linux    | \`gedcom2wiki-linux-v${VERSION}.tar.gz\`  | \`launch.sh\` + \`.desktop\` file  |
+          | Android  | \`gedcom2wiki-android-v${VERSION}.zip\`   | PWA (Add to Home Screen)           |
+          | iOS      | \`gedcom2wiki-ios-v${VERSION}.zip\`       | PWA (Add to Home Screen)           |
 
           See \`SHA256SUMS.txt\` for checksums.
 
@@ -122,10 +122,10 @@ jobs:
           draft: false
           fail_on_unmatched_files: true
           files: |
-            releases/gedcom2wiki-web-${{ steps.ver.outputs.version }}.zip
-            releases/gedcom2wiki-windows-${{ steps.ver.outputs.version }}.zip
-            releases/gedcom2wiki-macos-${{ steps.ver.outputs.version }}.zip
-            releases/gedcom2wiki-linux-${{ steps.ver.outputs.version }}.tar.gz
-            releases/gedcom2wiki-android-${{ steps.ver.outputs.version }}.zip
-            releases/gedcom2wiki-ios-${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-web-v${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-windows-v${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-macos-v${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-linux-v${{ steps.ver.outputs.version }}.tar.gz
+            releases/gedcom2wiki-android-v${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-ios-v${{ steps.ver.outputs.version }}.zip
             releases/SHA256SUMS.txt
