@@ -1,70 +1,102 @@
 # gedcom2wiki
 
+[![Release](https://img.shields.io/github/v/release/socrtwo/ged2wiki-SF)](https://github.com/socrtwo/ged2wiki-SF/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Build](https://github.com/socrtwo/ged2wiki-SF/actions/workflows/build.yml/badge.svg)](https://github.com/socrtwo/ged2wiki-SF/actions/workflows/build.yml)
+
 Convert standard GEDCOM genealogy files into Wikipedia/Wikimedia
-[`{{familytree}}`](https://en.wikipedia.org/wiki/Template:Family_tree) template
-markup.
+[`{{familytree}}`](https://en.wikipedia.org/wiki/Template:Family_tree)
+template markup &mdash; entirely in your browser. No server, no upload, no
+tracking.
 
 **Language:** JavaScript (browser) &nbsp;|&nbsp; **License:** MIT
-
-The converter is a self-contained web app — everything runs locally in your
-browser, no server is needed, and no data ever leaves your device.
 
 ## Features
 
 - Reads standard GEDCOM 5.5 genealogy files
 - Outputs Wikipedia `{{familytree}}` template markup
 - Handles multi-generation structures, marriages, and siblings
-- 100% client-side (HTML + JS) — works offline after first load
+- 100% client-side &mdash; works offline after the first load
 - Installable as a Progressive Web App (PWA) on Android, iOS, and desktop
-- Ships as unsigned downloads for Windows, macOS, Linux, Android, iOS, and Web
+- Distributed as unsigned downloads for Windows, macOS, Linux, Android,
+  iOS, and Web
+
+## Downloads
+
+Grab the latest unsigned build for your platform from
+[**Releases**](https://github.com/socrtwo/ged2wiki-SF/releases/latest), or use
+the direct links below:
+
+| Platform | Download | Launcher |
+|----------|----------|----------|
+| Web      | [`gedcom2wiki-web-v2.0.zip`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-web-v2.0.zip)           | open `index.html`           |
+| Windows  | [`gedcom2wiki-windows-v2.0.zip`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-windows-v2.0.zip)   | `launch.bat`                |
+| macOS    | [`gedcom2wiki-macos-v2.0.zip`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-macos-v2.0.zip)       | `launch.command`            |
+| Linux    | [`gedcom2wiki-linux-v2.0.tar.gz`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-linux-v2.0.tar.gz) | `launch.sh` + `.desktop`    |
+| Android  | [`gedcom2wiki-android-v2.0.zip`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-android-v2.0.zip)   | PWA (Add to Home Screen)    |
+| iOS      | [`gedcom2wiki-ios-v2.0.zip`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-ios-v2.0.zip)           | PWA (Add to Home Screen)    |
+
+Checksums: [`SHA256SUMS.txt`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/SHA256SUMS.txt)
 
 ## Quick start
 
 ### Use it online
 
-Open `index.html` in any modern browser. That's it.
+Open [`index.html`](index.html) in any modern browser and pick a `.ged`
+file &mdash; that's it.
 
-### Install as a desktop app
+### Install as a desktop app (Windows / macOS / Linux)
 
-1. Download the Windows / macOS / Linux archive from the
-   [Releases](https://github.com/socrtwo/ged2wiki-sf/releases) or the
-   [`releases/`](releases/) folder.
-2. Extract the archive.
-3. Run the included launcher:
-   - **Windows:** double-click `launch.bat`
-   - **macOS:** double-click `launch.command` (right-click &rarr; Open the first
-     time, since the app is unsigned)
-   - **Linux:** run `./launch.sh` in a terminal
+1. Download the archive for your platform from the
+   [latest release](https://github.com/socrtwo/ged2wiki-SF/releases/latest).
+2. Extract it.
+3. Double-click the launcher:
+   - **Windows:** `launch.bat`
+   - **macOS:** `launch.command` &mdash; first run only: right-click
+     &rarr; Open &rarr; Open (Gatekeeper blocks unsigned apps by default).
+   - **Linux:** `./launch.sh` (or open `index.html` directly).
 
 The launcher opens `index.html` in your default browser.
 
 ### Install on Android / iOS
 
 1. Download the Android or iOS archive and extract it.
-2. Host the extracted folder on any static web server (for example,
-   `python3 -m http.server` from the folder, or upload to GitHub Pages /
-   Netlify / Cloudflare Pages).
-3. Open the hosted URL on your phone.
-4. Use the browser's **"Add to Home screen"** option to install it as a PWA.
+2. Host the folder on any HTTPS static host &mdash;
+   [GitHub Pages](https://pages.github.com/), Netlify, Cloudflare Pages,
+   Vercel, S3, or any web server. Locally: `python3 -m http.server 8080`
+   works for testing.
+3. Open the URL on your phone.
+4. Use the browser's **"Add to Home Screen"** option to install as a PWA.
 
 ## Usage
 
 1. Click **Load sample** or select a `.ged` file.
 2. The converted wiki markup appears in the output panel.
-3. Click **Copy output** or **Download .txt**, then paste into any
-   Wikimedia-compatible wiki article.
+3. Click **Copy output** or **Download .txt** and paste the result into
+   any Wikimedia-compatible wiki article.
 
 ## Programmatic use
 
+The converter is a UMD module &mdash; it works in both browsers and Node.
+
 ```js
-// Node or browser
+// Node
+const fs = require('fs');
 const gedcom2wiki = require('./gedcom2wiki.js');
 const text = fs.readFileSync('family.ged', 'utf8');
 const { output, warning, individualCount, familyCount } = gedcom2wiki(text);
 console.log(output);
 ```
 
-## Files
+```html
+<!-- Browser -->
+<script src="gedcom2wiki.js"></script>
+<script>
+  const { output } = gedcom2wiki(gedcomText);
+</script>
+```
+
+## Project layout
 
 | File                      | Purpose                                  |
 | ------------------------- | ---------------------------------------- |
@@ -74,6 +106,7 @@ console.log(output);
 | `sw.js`                   | Service worker for offline use           |
 | `icon.svg` / `icon-*.png` | App icons                                |
 | `sample.ged`              | Example GEDCOM input                     |
+| `build-releases.sh`       | Build all six platform distributions     |
 | `releases/`               | Prebuilt unsigned distribution archives  |
 
 ## Build distributions locally
@@ -91,16 +124,29 @@ Produces all six platform bundles in `releases/`:
 - `gedcom2wiki-android-v2.0.zip`
 - `gedcom2wiki-ios-v2.0.zip`
 
-All archives are **unsigned**. On macOS and Windows you may need to allow the
-launcher explicitly on first run.
+All archives are **unsigned**. On macOS and Windows you may need to
+allow the launcher explicitly on first run.
+
+## Publish a new release
+
+1. Bump the version in `build-releases.sh` (or pass `VERSION=x.y` at
+   runtime) and commit.
+2. Go to **Actions &rarr; Release gedcom2wiki &rarr; Run workflow**.
+3. Enter the tag (e.g. `v2.1`) and click **Run workflow**.
+
+The workflow smoke-tests the converter, builds all six archives,
+computes SHA-256 checksums, generates release notes, and publishes a
+GitHub Release with the archives attached.
 
 ## History
 
 - Originally hosted on [SourceForge](https://sourceforge.net/projects/ged2wiki/)
-  as a PHP web service.
-- Migrated to GitHub and rewritten in client-side JavaScript so it runs as a
-  static web app, PWA, and offline desktop app.
+  as a PHP web service that required a server.
+- **v2.0** (2026): rewritten in client-side JavaScript so the same code
+  runs as a static web app, an offline-capable PWA, and as unsigned
+  launchers for every major platform. Output is byte-for-byte identical
+  to the original PHP on the bundled `sample.ged`.
 
 ## License
 
-MIT License — see [LICENSE](LICENSE).
+MIT License &mdash; see [LICENSE](LICENSE).
