@@ -1,0 +1,131 @@
+name: Release gedcom2wiki
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v2.0)'
+        required: true
+        default: 'v2.0'
+      prerelease:
+        description: 'Mark as pre-release?'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Smoke-test converter
+        run: |
+          node --check gedcom2wiki.js
+          node -e "
+          const fs = require('fs');
+          const gedcom2wiki = require('./gedcom2wiki.js');
+          const text = fs.readFileSync('sample.ged', 'utf8');
+          const res = gedcom2wiki(text);
+          if (!res.output.includes('{{familytree/start}}')) throw new Error('missing start template');
+          if (!res.output.includes('{{familytree/end}}'))   throw new Error('missing end template');
+          if (res.individualCount !== 8) throw new Error('expected 8 individuals, got ' + res.individualCount);
+          if (res.familyCount     !== 2) throw new Error('expected 2 families, got ' + res.familyCount);
+          console.log('OK');
+          "
+
+      - name: Derive version from tag
+        id: ver
+        run: |
+          TAG="${{ github.event.inputs.tag }}"
+          VERSION="${TAG#v}"
+          echo "tag=$TAG"         >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build distributions
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          chmod +x build-releases.sh
+          ./build-releases.sh
+          ls -la releases/
+
+      - name: Compute SHA-256 checksums
+        working-directory: releases
+        run: |
+          sha256sum gedcom2wiki-*.zip gedcom2wiki-*.tar.gz > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Generate release notes
+        id: notes
+        env:
+          TAG: ${{ steps.ver.outputs.tag }}
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          cat > release-notes.md <<EOF
+          # gedcom2wiki ${TAG}
+
+          Unsigned multi-platform release of the gedcom2wiki converter.
+          The converter runs entirely client-side in the browser &mdash;
+          no data leaves your device.
+
+          ## Downloads
+
+          | Platform | Archive | Launcher |
+          |----------|---------|----------|
+          | Web      | \`gedcom2wiki-web-${VERSION}.zip\`       | open \`index.html\`                |
+          | Windows  | \`gedcom2wiki-windows-${VERSION}.zip\`   | \`launch.bat\`                     |
+          | macOS    | \`gedcom2wiki-macos-${VERSION}.zip\`     | \`launch.command\`                 |
+          | Linux    | \`gedcom2wiki-linux-${VERSION}.tar.gz\`  | \`launch.sh\` + \`.desktop\` file  |
+          | Android  | \`gedcom2wiki-android-${VERSION}.zip\`   | PWA (Add to Home Screen)           |
+          | iOS      | \`gedcom2wiki-ios-${VERSION}.zip\`       | PWA (Add to Home Screen)           |
+
+          See \`SHA256SUMS.txt\` for checksums.
+
+          All archives are **unsigned**. On macOS and Windows you may
+          need to approve the launcher explicitly on first run. The
+          Android and iOS bundles install as Progressive Web Apps; see
+          \`INSTALL-ANDROID.txt\` / \`INSTALL-IOS.txt\` inside each.
+
+          ## What's new in ${TAG}
+
+          - Ported the original PHP converter to pure browser JavaScript.
+          - Added a self-contained HTML UI with file picker, copy / download,
+            responsive layout, and dark-mode.
+          - Added PWA manifest + service worker for offline use and
+            mobile install.
+          - Shipped unsigned bundles for Web, Windows, macOS, Linux,
+            Android, and iOS.
+          EOF
+          echo "Generated release notes:"
+          cat release-notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: gedcom2wiki ${{ steps.ver.outputs.tag }}
+          body_path: release-notes.md
+          prerelease: ${{ github.event.inputs.prerelease }}
+          draft: false
+          fail_on_unmatched_files: true
+          files: |
+            releases/gedcom2wiki-web-${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-windows-${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-macos-${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-linux-${{ steps.ver.outputs.version }}.tar.gz
+            releases/gedcom2wiki-android-${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-ios-${{ steps.ver.outputs.version }}.zip
+            releases/SHA256SUMS.txt
