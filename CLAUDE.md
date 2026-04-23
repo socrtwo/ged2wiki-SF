@@ -16,6 +16,27 @@ When you make any change to this repository:
 The merge can be a standard merge commit; use squash only if the user
 asks for it.
 
+## Always update `README.md` with every change
+
+Every change to this repository must include a corresponding
+`README.md` update in the same pull request so the docs never drift
+from the code. Specifically:
+
+- Adding or renaming a file &rarr; update the **Project layout** table.
+- Changing version, filenames, or launcher behavior &rarr; update the
+  **Downloads** table, the bundle list under **Build distributions
+  locally**, and any in-text version references.
+- Adding or changing a workflow &rarr; update **Publish a new release**
+  or the relevant section.
+- Changing the public JS API of `gedcom2wiki.js` &rarr; update
+  **Programmatic use**.
+- Behavior, feature, or UX change in the app &rarr; update **Features**
+  and/or **Usage**.
+
+If a change truly has no user-visible effect (e.g. a typo fix in a
+comment), note that explicitly in the PR description rather than
+silently skipping the README update.
+
 ## Project notes
 
 - The converter is a client-side JavaScript app. The engine is
