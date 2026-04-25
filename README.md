@@ -1,9 +1,18 @@
-# gedcom2wiki
+<!--MODERNIZED:v1-->
+# Ged2wiki
 
-<!--PAGES_LINK_BANNER-->
-> 🌐 **Live page:** [https://socrtwo.github.io/ged2wiki-SF/](https://socrtwo.github.io/ged2wiki-SF/)  
-> 📦 **Releases:** [github.com/socrtwo/ged2wiki-SF/releases](https://github.com/socrtwo/ged2wiki-SF/releases)
-<!--/PAGES_LINK_BANNER-->
+> Migrated from SourceForge via SF2GH Migrator
+
+[![Live page](https://img.shields.io/badge/live-page-ff2e93?style=for-the-badge)](https://socrtwo.github.io/ged2wiki-SF/)
+[![Releases](https://img.shields.io/github/v/release/socrtwo/ged2wiki-SF?style=for-the-badge&color=7c3aed)](https://github.com/socrtwo/ged2wiki-SF/releases)
+[![License](https://img.shields.io/github/license/socrtwo/ged2wiki-SF?style=for-the-badge&color=22d3ee)](https://github.com/socrtwo/ged2wiki-SF/blob/main/LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/socrtwo/ged2wiki-SF?style=for-the-badge&color=34d399)](https://github.com/socrtwo/ged2wiki-SF/commits)
+
+🌐 **Live:** https://socrtwo.github.io/ged2wiki-SF/  
+📦 **Downloads:** [Releases](https://github.com/socrtwo/ged2wiki-SF/releases)  
+📂 **Source:** [socrtwo/ged2wiki-SF](https://github.com/socrtwo/ged2wiki-SF)
+
+---
 
 [![Release](https://img.shields.io/github/v/release/socrtwo/ged2wiki-SF)](https://github.com/socrtwo/ged2wiki-SF/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -155,3 +164,25 @@ GitHub Release with the archives attached.
 ## License
 
 MIT License &mdash; see [LICENSE](LICENSE).
+
+---
+
+## 📜 SourceForge heritage
+
+This project originated on **SourceForge** before being migrated to GitHub. The legacy SourceForge entry, if still available, can be searched at:
+
+🔗 https://sourceforge.net/projects/ged2wiki/
+
+The repository here at `socrtwo/ged2wiki-SF` is the canonical, actively-maintained home. All future updates, issue tracking, and releases happen on GitHub.
+
+## 🛠️ Contributing
+
+Issues and pull requests are welcome at [https://github.com/socrtwo/ged2wiki-SF/issues](https://github.com/socrtwo/ged2wiki-SF/issues).
+
+## 📝 License
+
+See the [LICENSE](https://github.com/socrtwo/ged2wiki-SF/blob/main/LICENSE) file in this repository. If no license file is present, the project is shared as-is for reference and personal use; please contact the maintainer for other use cases.
+
+---
+
+*Maintained by [@socrtwo](https://github.com/socrtwo)*
