@@ -1,5 +1,10 @@
 # gedcom2wiki
 
+<!--PAGES_LINK_BANNER-->
+> 🌐 **Live page:** [https://socrtwo.github.io/ged2wiki-SF/](https://socrtwo.github.io/ged2wiki-SF/)  
+> 📦 **Releases:** [github.com/socrtwo/ged2wiki-SF/releases](https://github.com/socrtwo/ged2wiki-SF/releases)
+<!--/PAGES_LINK_BANNER-->
+
 [![Release](https://img.shields.io/github/v/release/socrtwo/ged2wiki-SF)](https://github.com/socrtwo/ged2wiki-SF/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Build](https://github.com/socrtwo/ged2wiki-SF/actions/workflows/build.yml/badge.svg)](https://github.com/socrtwo/ged2wiki-SF/actions/workflows/build.yml)
