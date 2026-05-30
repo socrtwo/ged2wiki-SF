@@ -168,6 +168,31 @@ and signing; this unsigned build ships as an installable PWA instead.
 EOF
 (cd "$STAGE" && zip -qr "$REL/gedcom2wiki-ios-v$VERSION.zip" "gedcom2wiki-ios-v$VERSION")
 
+echo "==> Building ChromeOS (PWA bundle)"
+COS="$STAGE/gedcom2wiki-chromeos-v$VERSION"
+stage_core "$COS"
+cat > "$COS/INSTALL-CHROMEOS.txt" <<'EOF'
+gedcom2wiki - ChromeOS PWA bundle
+
+ChromeOS treats Progressive Web Apps as first-class apps; no APK,
+extension, or signing is required.
+
+To install (recommended):
+  1. Open the hosted app in Chrome on your Chromebook
+     (or host this folder on any HTTPS static server / GitHub Pages).
+  2. Click the install icon in the address bar, or the menu (3 dots)
+     -> "Install gedcom2wiki".
+  3. The app appears in your launcher and works offline.
+
+To run from this bundle without internet:
+  1. Unzip into Files -> My files.
+  2. Open index.html in Chrome (right-click -> Open with -> Chrome).
+
+Chromebooks with Play Store support can alternatively sideload the
+Android PWA/APK from this same release.
+EOF
+(cd "$STAGE" && zip -qr "$REL/gedcom2wiki-chromeos-v$VERSION.zip" "gedcom2wiki-chromeos-v$VERSION")
+
 echo
 echo "Release bundles created in $REL:"
 ls -la "$REL"

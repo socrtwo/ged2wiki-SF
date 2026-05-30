@@ -33,7 +33,7 @@ tracking.
 - 100% client-side &mdash; works offline after the first load
 - Installable as a Progressive Web App (PWA) on Android, iOS, and desktop
 - Distributed as unsigned downloads for Windows, macOS, Linux, Android,
-  iOS, and Web
+  iOS, ChromeOS, and Web
 
 ## Downloads
 
@@ -49,6 +49,7 @@ the direct links below:
 | Linux    | [`gedcom2wiki-linux-v2.0.tar.gz`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-linux-v2.0.tar.gz) | `launch.sh` + `.desktop`    |
 | Android  | [`gedcom2wiki-android-v2.0.zip`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-android-v2.0.zip)   | PWA (Add to Home Screen)    |
 | iOS      | [`gedcom2wiki-ios-v2.0.zip`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-ios-v2.0.zip)           | PWA (Add to Home Screen)    |
+| ChromeOS | [`gedcom2wiki-chromeos-v2.0.zip`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/gedcom2wiki-chromeos-v2.0.zip) | PWA (Install from Chrome)   |
 
 Checksums: [`SHA256SUMS.txt`](https://github.com/socrtwo/ged2wiki-SF/releases/download/v2.0/SHA256SUMS.txt)
 
@@ -137,6 +138,7 @@ Produces all six platform bundles in `releases/`:
 - `gedcom2wiki-linux-v2.0.tar.gz`
 - `gedcom2wiki-android-v2.0.zip`
 - `gedcom2wiki-ios-v2.0.zip`
+- `gedcom2wiki-chromeos-v2.0.zip`
 
 All archives are **unsigned**. On macOS and Windows you may need to
 allow the launcher explicitly on first run.

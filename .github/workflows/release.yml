@@ -91,6 +91,7 @@ jobs:
           | Linux    | \`gedcom2wiki-linux-v${VERSION}.tar.gz\`  | \`launch.sh\` + \`.desktop\` file  |
           | Android  | \`gedcom2wiki-android-v${VERSION}.zip\`   | PWA (Add to Home Screen)           |
           | iOS      | \`gedcom2wiki-ios-v${VERSION}.zip\`       | PWA (Add to Home Screen)           |
+          | ChromeOS | \`gedcom2wiki-chromeos-v${VERSION}.zip\`  | PWA (Install from Chrome)          |
 
           See \`SHA256SUMS.txt\` for checksums.
 
@@ -107,7 +108,7 @@ jobs:
           - Added PWA manifest + service worker for offline use and
             mobile install.
           - Shipped unsigned bundles for Web, Windows, macOS, Linux,
-            Android, and iOS.
+            Android, iOS, and ChromeOS.
           EOF
           echo "Generated release notes:"
           cat release-notes.md
@@ -128,4 +129,5 @@ jobs:
             releases/gedcom2wiki-linux-v${{ steps.ver.outputs.version }}.tar.gz
             releases/gedcom2wiki-android-v${{ steps.ver.outputs.version }}.zip
             releases/gedcom2wiki-ios-v${{ steps.ver.outputs.version }}.zip
+            releases/gedcom2wiki-chromeos-v${{ steps.ver.outputs.version }}.zip
             releases/SHA256SUMS.txt
