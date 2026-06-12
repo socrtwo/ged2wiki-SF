@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
-# Build unsigned release bundles for Windows, macOS, Linux, Android, iOS, Web.
+# Build unsigned release bundles for Windows, macOS, Linux, ChromeOS, Android, iOS, Web.
 # All targets wrap the same static PWA; desktop variants add a platform launcher.
+# Usage: ./build-releases.sh [vX.Y]   (or VERSION=X.Y ./build-releases.sh)
 set -euo pipefail
 
-VERSION="${VERSION:-2.0}"
+if [ "$#" -ge 1 ] && [ -n "$1" ]; then
+  VERSION="${1#v}"
+else
+  VERSION="${VERSION:-2.1}"
+fi
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 REL="$ROOT/releases"
 STAGE="$(mktemp -d)"
@@ -119,6 +124,32 @@ Alternatively, copy gedcom2wiki.desktop to ~/.local/share/applications
 and edit the Exec/Icon paths to the absolute extracted location.
 EOF
 tar -C "$STAGE" -czf "$REL/gedcom2wiki-linux-v$VERSION.tar.gz" "gedcom2wiki-linux-v$VERSION"
+
+echo "==> Building ChromeOS (PWA bundle)"
+CROS="$STAGE/gedcom2wiki-chromeos-v$VERSION"
+stage_core "$CROS"
+cat > "$CROS/INSTALL-CHROMEOS.txt" <<'EOF'
+gedcom2wiki - ChromeOS PWA bundle
+
+ChromeOS treats Progressive Web Apps as first-class apps. No Play Store
+package, no Linux container, and no signing required.
+
+To install as an app:
+  1. Open the hosted app in Chrome on your Chromebook:
+     https://socrtwo.github.io/ged2wiki-SF/
+     (or host this folder yourself on any HTTPS static host).
+  2. Click the install icon at the right end of the address bar
+     (or Chrome menu -> "Install gedcom2wiki").
+  3. gedcom2wiki appears in the ChromeOS launcher and works offline
+     after the first load (service worker).
+
+To run directly from this bundle without installing:
+  1. Unzip into Files -> My files.
+  2. Double-click index.html to open it in Chrome.
+
+All conversion runs locally in the browser; no data leaves the device.
+EOF
+(cd "$STAGE" && zip -qr "$REL/gedcom2wiki-chromeos-v$VERSION.zip" "gedcom2wiki-chromeos-v$VERSION")
 
 echo "==> Building Android (PWA bundle)"
 AND="$STAGE/gedcom2wiki-android-v$VERSION"
