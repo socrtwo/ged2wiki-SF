@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Release tag (e.g. v2.0)'
+        description: 'Release tag (e.g. v2.1)'
         required: true
-        default: 'v2.0'
+        default: 'v2.1'
       prerelease:
         description: 'Mark as pre-release?'
         type: boolean
@@ -64,8 +64,10 @@ jobs:
 
       - name: Compute SHA-256 checksums
         working-directory: releases
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
         run: |
-          sha256sum gedcom2wiki-*.zip gedcom2wiki-*.tar.gz > SHA256SUMS.txt
+          sha256sum gedcom2wiki-*-v${VERSION}.zip gedcom2wiki-*-v${VERSION}.tar.gz > SHA256SUMS.txt
           cat SHA256SUMS.txt
 
       - name: Generate release notes
@@ -89,6 +91,7 @@ jobs:
           | Windows  | \`gedcom2wiki-windows-v${VERSION}.zip\`   | \`launch.bat\`                     |
           | macOS    | \`gedcom2wiki-macos-v${VERSION}.zip\`     | \`launch.command\`                 |
           | Linux    | \`gedcom2wiki-linux-v${VERSION}.tar.gz\`  | \`launch.sh\` + \`.desktop\` file  |
+          | ChromeOS | \`gedcom2wiki-chromeos-v${VERSION}.zip\`  | PWA (install from Chrome)          |
           | Android  | \`gedcom2wiki-android-v${VERSION}.zip\`   | PWA (Add to Home Screen)           |
           | iOS      | \`gedcom2wiki-ios-v${VERSION}.zip\`       | PWA (Add to Home Screen)           |
 
@@ -96,18 +99,19 @@ jobs:
 
           All archives are **unsigned**. On macOS and Windows you may
           need to approve the launcher explicitly on first run. The
-          Android and iOS bundles install as Progressive Web Apps; see
-          \`INSTALL-ANDROID.txt\` / \`INSTALL-IOS.txt\` inside each.
+          ChromeOS, Android, and iOS bundles install as Progressive Web
+          Apps; see \`INSTALL-CHROMEOS.txt\` / \`INSTALL-ANDROID.txt\` /
+          \`INSTALL-IOS.txt\` inside each.
 
           ## What's new in ${TAG}
 
-          - Ported the original PHP converter to pure browser JavaScript.
-          - Added a self-contained HTML UI with file picker, copy / download,
-            responsive layout, and dark-mode.
-          - Added PWA manifest + service worker for offline use and
-            mobile install.
-          - Shipped unsigned bundles for Web, Windows, macOS, Linux,
-            Android, and iOS.
+          - Added a ChromeOS distribution
+            (\`gedcom2wiki-chromeos-v${VERSION}.zip\`): the PWA plus
+            ChromeOS-specific install instructions, completing coverage
+            of all seven platforms (Web, Windows, macOS, Linux, ChromeOS,
+            Android, iOS).
+          - \`build-releases.sh\` now accepts the tag as an argument
+            (\`./build-releases.sh v${VERSION}\`).
           EOF
           echo "Generated release notes:"
           cat release-notes.md
@@ -126,6 +130,7 @@ jobs:
             releases/gedcom2wiki-windows-v${{ steps.ver.outputs.version }}.zip
             releases/gedcom2wiki-macos-v${{ steps.ver.outputs.version }}.zip
             releases/gedcom2wiki-linux-v${{ steps.ver.outputs.version }}.tar.gz
+            releases/gedcom2wiki-chromeos-v${{ steps.ver.outputs.version }}.zip
             releases/gedcom2wiki-android-v${{ steps.ver.outputs.version }}.zip
             releases/gedcom2wiki-ios-v${{ steps.ver.outputs.version }}.zip
             releases/SHA256SUMS.txt
